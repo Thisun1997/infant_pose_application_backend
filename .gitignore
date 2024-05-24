@@ -1,0 +1,5 @@
+/venv/
+model/model_best.pth
+inputs
+.idea
+__pycache__/
