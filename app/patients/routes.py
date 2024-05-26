@@ -7,7 +7,7 @@ from bson.json_util import dumps
 import model.Initializer
 import io
 import numpy as np
-from flask import Response, request, jsonify
+from flask import Response, request, jsonify, send_file
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -32,10 +32,11 @@ def index():
 #     pred = funeNet(processed_image)
 #     return display_output(pred, image_patch)
 
-@bp.route('/prediction', methods=['POST'])
+@bp.route('/prediction', methods=['GET'])
 def display_prediction():
-    depth_image = np.load("inputs/depth.npy")
-    pressure_image = np.load("inputs/pressure.npy")
+    data = request.get_json()
+    depth_image = np.array(data["depth"], dtype="uint16")
+    pressure_image = np.array(data["pressure"], dtype="float32")
     funeNet = model.Initializer.initialize_model()
     processed_image, image_patch = preprocess(depth_image, pressure_image)
     pred = funeNet(processed_image)
@@ -47,7 +48,6 @@ def register_patient():
     data = request.get_json()
     data["date_of_birth"] = datetime.combine(datetime.strptime(data["date_of_birth"], "%Y-%m-%d").date(),
                                              datetime.min.time())
-    # data["admitted_time"] = int(datetime.strptime(data["admitted_time"], "%Y-%m-%d %H:%M:%S").timestamp())
     data["_id"] = utils.get_next_sequence("document_id")
     try:
         Config.patients_collection.insert_one(data)
