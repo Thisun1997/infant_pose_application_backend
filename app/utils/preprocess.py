@@ -253,12 +253,12 @@ def display_output(pred, img_patch):
     pred2d_patch[:, :2] = pred_hm[0] / out_shp[0] * sz_pch[1]  # only firs
 
     fig = Figure()
-    ax = fig.add_subplot(2, 2, 1)
+    ax = fig.add_subplot(1, 1, 1)
     plotImage(ax, img_patch[:, :, 0], 0)
     plot2DJoints(ax, pred2d_patch, SMaL_configs["connectedJoints"], SMaL_configs["gtjointColours"])
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')
+    return output
 
 
 def get_max_preds(batch_heatmaps):

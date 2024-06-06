@@ -2,9 +2,9 @@ from datetime import datetime
 
 import torchvision.transforms as transforms
 import cv2
+from bson import Binary
 from bson.json_util import dumps
 
-import model.Initializer
 import io
 import numpy as np
 from flask import Response, request, jsonify, send_file
@@ -13,34 +13,37 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 import utils
-from app.patients import bp
+from app.patients import bp, fuseNet
 from app.utils.preprocess import generate_patch_image, adj_bb, preprocess, display_output
 from config import Config
 
 
 @bp.route('/')
 def index():
-    return "home"
+    try:
+        records = Config.patients_collection.find({}, {'_id': 1, 'patient_name': 1})
+        result = list(records)
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-
-# @bp.route('/prediction', methods=['GET'])
-# def display_prediction():
-#     depth_image = np.load("inputs/depth.npy")
-#     pressure_image = np.load("inputs/pressure.npy")
-#     funeNet = model.Initializer.initialize_model()
-#     processed_image, image_patch = preprocess(depth_image, pressure_image)
-#     pred = funeNet(processed_image)
-#     return display_output(pred, image_patch)
 
 @bp.route('/prediction', methods=['GET'])
 def display_prediction():
-    data = request.get_json()
-    depth_image = np.array(data["depth"], dtype="uint16")
-    pressure_image = np.array(data["pressure"], dtype="float32")
-    funeNet = model.Initializer.initialize_model()
-    processed_image, image_patch = preprocess(depth_image, pressure_image)
-    pred = funeNet(processed_image)
-    return display_output(pred, image_patch)
+    try:
+        data = request.get_json()
+        depth_image = np.array(data["depth"], dtype="uint16")
+        pressure_image = np.array(data["pressure"], dtype="float32")
+        processed_image, image_patch = preprocess(depth_image, pressure_image)
+        pred = fuseNet(processed_image)
+        output = display_output(pred, image_patch)
+
+        data["visualization"] = Binary(output.getvalue())
+        Config.visualization_collection.insert_one(data)
+
+        return Response(output.getvalue(), mimetype='image/png')
+    except Exception as e:
+        return Response(str(e),500)
 
 
 @bp.route('/registration', methods=['POST'])
@@ -75,3 +78,28 @@ def admit_patient():
         return jsonify({"message": "completed"}), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+
+
+@bp.route('/update', methods=['PUT'])
+def update_document():
+    try:
+        data = request.json
+        query = data.get('query')
+        new_field = data.get('new_field')
+        print(data)
+
+        if not query or not new_field:
+            return jsonify({"error": "Invalid input"}), 400
+
+        result = Config.visualization_collection.update_one(
+            query,
+            {"$set": new_field}
+        )
+
+        if result.matched_count == 0:
+            return jsonify({"error": "Record not found"}), 404
+
+        return jsonify({"message": "Record updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

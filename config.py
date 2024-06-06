@@ -17,4 +17,5 @@ class Config:
     patients_collection = db['patients']
     counters_collection = db['counters']
     admissions_collection = db['admissions']
+    visualization_collection = db['visualizations']
 
