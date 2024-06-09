@@ -18,4 +18,5 @@ class Config:
     counters_collection = db['counters']
     admissions_collection = db['admissions']
     visualization_collection = db['visualizations']
+    feedback_collection = db['feedback']
 
