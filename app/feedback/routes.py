@@ -4,9 +4,17 @@ from app.feedback import bp
 from config import Config
 
 
-@bp.route('/', methods=["POST"])
+@bp.route('/', methods=["GET"])
 def index():
-    return "home"
+    try:
+        records = Config.feedback_collection.find()
+        result = []
+        for record in records:
+            record['_id'] = str(record['_id'])
+            result.append(record)
+        return jsonify(result[::-1]), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @bp.route('/add', methods=['POST'])
