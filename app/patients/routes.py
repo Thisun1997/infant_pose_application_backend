@@ -138,3 +138,29 @@ def get_history_data():
         return dumps(data_list), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+
+
+@bp.route('/update_data', methods=['PUT'])
+def update_patient_document():
+    try:
+        data = request.json
+        query = data.get('query')
+        query["_id"] = int(query["_id"])
+        new_field = data.get('new_field')
+        print(data)
+
+        if not query or not new_field:
+            return jsonify({"error": "Invalid input"}), 400
+
+        result = Config.patients_collection.update_one(
+            query,
+            {"$set": new_field}
+        )
+
+        if result.matched_count == 0:
+            return jsonify({"error": "Record not found"}), 404
+
+        return jsonify({"message": "Record updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
