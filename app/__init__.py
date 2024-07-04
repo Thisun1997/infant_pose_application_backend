@@ -27,6 +27,10 @@ from app.feedback import bp as feedback_bp
 
 app.register_blueprint(feedback_bp, url_prefix='/feedback')
 
+from app.visualizations import bp as visualization_bp
+
+app.register_blueprint(visualization_bp, url_prefix='/visualizations')
+
 # def create_app(config_class=Config):
 #     app = Flask(__name__)
 #     app.config.from_object(config_class)
