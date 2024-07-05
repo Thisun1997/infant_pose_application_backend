@@ -13,7 +13,7 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 import utils
-from app.patients import bp, fuseNet
+from app.patients import bp
 from app.utils.preprocess import generate_patch_image, adj_bb, preprocess, display_output
 from config import Config
 
@@ -72,7 +72,7 @@ def update_patient_document():
         print(data)
 
         if not query or not new_field:
-            return jsonify({"error": "Invalid input"}), 400
+            return jsonify({"message": "Invalid input"}), 400
 
         result = Config.patients_collection.update_one(
             query,
@@ -80,9 +80,9 @@ def update_patient_document():
         )
 
         if result.matched_count == 0:
-            return jsonify({"error": "Record not found"}), 404
+            return jsonify({"message": "Record not found"}), 404
 
         return jsonify({"message": "Record updated successfully"}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"message": str(e)}), 500

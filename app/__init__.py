@@ -15,6 +15,10 @@ from app.main import bp as main_bp
 
 app.register_blueprint(main_bp)
 
+from app.model_loader import bp as model_loader_bp
+
+app.register_blueprint(model_loader_bp, url_prefix='/model_loader')
+
 from app.patients import bp as patients_bp
 
 app.register_blueprint(patients_bp, url_prefix='/patients')

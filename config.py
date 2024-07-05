@@ -19,4 +19,5 @@ class Config:
     admissions_collection = db['admissions']
     visualization_collection = db['visualizations']
     feedback_collection = db['feedback']
+    model_collection = db['models']
 

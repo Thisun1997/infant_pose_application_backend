@@ -5,7 +5,6 @@ from bson import Binary, ObjectId
 from bson.json_util import dumps
 from flask import request, jsonify
 
-from app.patients import fuseNet
 from app.utils.preprocess import preprocess, display_output
 from app.visualizations import bp
 from config import Config
@@ -18,10 +17,13 @@ def display_prediction():
         depth_image = np.array(data["depth"], dtype="uint16")
         pressure_image = np.array(data["pressure"], dtype="float32")
         processed_image, image_patch = preprocess(depth_image, pressure_image)
+        from app.model_loader.routes import fuseNet, model_configs
         pred = fuseNet(processed_image)
+        print(fuseNet.fuse_stage)
         output = display_output(pred, image_patch)
 
         data["visualization"] = Binary(output.getvalue())
+        data["model_id"] = str(model_configs["_id"])
         result = Config.visualization_collection.insert_one(data)
 
         return jsonify({"message": str(result.inserted_id)}), 200
@@ -39,7 +41,7 @@ def update_document():
         print(data)
 
         if not query or not new_field:
-            return jsonify({"error": "Invalid input"}), 400
+            return jsonify({"message": "Invalid input"}), 400
 
         result = Config.visualization_collection.update_one(
             query,
@@ -47,12 +49,12 @@ def update_document():
         )
 
         if result.matched_count == 0:
-            return jsonify({"error": "Record not found"}), 404
+            return jsonify({"message": "Record not found"}), 404
 
         return jsonify({"message": "Record updated successfully"}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"message": str(e)}), 500
 
 
 @bp.route('/visualization_data', methods=['GET'])
