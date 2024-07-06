@@ -5,11 +5,6 @@ from app.users import bp
 from config import Config
 
 
-@bp.route('/')
-def index():
-    return "home"
-
-
 @bp.route('/auth', methods=['POST'])
 def authenticate_user():
     data = request.get_json()
