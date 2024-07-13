@@ -1,21 +1,16 @@
-from datetime import datetime, timedelta
+import logging
+from datetime import datetime
 
-import torchvision.transforms as transforms
-import cv2
-from bson import Binary, ObjectId
 from bson.json_util import dumps
 
-import io
-import numpy as np
-from flask import Response, request, jsonify, send_file
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+from flask import request, jsonify
 
-import utils
+from app.utils import utils
 from app.patients import bp
-from app.utils.preprocess import generate_patch_image, adj_bb, preprocess, display_output
 from config import Config
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 @bp.route('/')
@@ -23,8 +18,10 @@ def index():
     try:
         records = Config.patients_collection.find({}, {'_id': 1, 'patient_name': 1})
         result = list(records)
+        logger.info(f"Fetched {len(result)} patient records")
         return jsonify(result), 200
     except Exception as e:
+        logger.error(f"Error in patients/ {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
@@ -36,8 +33,10 @@ def register_patient():
     data["_id"] = utils.get_next_sequence("document_id")
     try:
         Config.patients_collection.insert_one(data)
+        logger.info(f"Patient registered: {data}")
         return jsonify({"message": "Registration successful!. Patient registration number is " + str(data["_id"])}), 200
     except Exception as e:
+        logger.error(f"Error in patients/registration {str(e)}")
         return jsonify({"message": str(e)}), 500
 
 
@@ -46,19 +45,10 @@ def get_patient():
     data = request.get_json()
     try:
         data = Config.patients_collection.find_one(data)
-        print(data)
+        logger.info(f"Patient fetched: {data}")
         return dumps(data), 200
     except Exception as e:
-        return jsonify({"message": str(e)}), 500
-
-
-@bp.route('/admission', methods=['POST'])
-def admit_patient():
-    data = request.get_json()
-    try:
-        Config.admissions_collection.insert_one(data)
-        return jsonify({"message": "completed"}), 200
-    except Exception as e:
+        logger.error(f"Error in patients/data {str(e)}")
         return jsonify({"message": str(e)}), 500
 
 
@@ -69,9 +59,9 @@ def update_patient_document():
         query = data.get('query')
         query["_id"] = int(query["_id"])
         new_field = data.get('new_field')
-        print(data)
 
         if not query or not new_field:
+            logger.error(f"Invalid patient data to update: {data}")
             return jsonify({"message": "Invalid input"}), 400
 
         result = Config.patients_collection.update_one(
@@ -80,9 +70,12 @@ def update_patient_document():
         )
 
         if result.matched_count == 0:
+            logger.error(f"No patient record found to update: {data}")
             return jsonify({"message": "Record not found"}), 404
 
+        logger.info(f"Patient updated: {data}")
         return jsonify({"message": "Record updated successfully"}), 200
 
     except Exception as e:
+        logger.error(f"Error in patients/update_data {str(e)}")
         return jsonify({"message": str(e)}), 500

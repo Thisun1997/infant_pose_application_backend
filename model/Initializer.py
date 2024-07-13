@@ -1,5 +1,7 @@
 import os
 import torch
+
+from config import Config
 from model.HRposeFuseNetNewUnweighted_v2 import get_pose_net
 
 
@@ -7,7 +9,7 @@ from model.HRposeFuseNetNewUnweighted_v2 import get_pose_net
 
 def initialize_model(model_configs):
     mod_src = ["depth", "psm"]
-    fuse_model_path = 'D:\IIT\/academic\Final_project\code\infant_pose_application_backend\model'
+    fuse_model_path = Config.base_path + 'model'
 
     model_type = model_configs["model_type"]
 

@@ -10,6 +10,8 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from torchvision import transforms
 
+from config import Config
+
 out_shp = (64, 64)
 sz_pch = (256, 256)
 SMaL_configs = {
@@ -221,8 +223,8 @@ def preprocess(depth_image, psm_image):
     input_image_stacked = np.stack([depth_image, psm_image], axis=2)
     input_image_exp = np.expand_dims(input_image_stacked, axis=0)
     input_image_exp[:, :, :, 0] = np.clip(input_image_exp[:, :, :, 0], 400, 800)
-    mean = np.load("config/input_configs/mean.npy")
-    std = np.load("config/input_configs/std.npy")
+    mean = np.load(Config.base_path + "config/input_configs/mean.npy")
+    std = np.load(Config.base_path + "config/input_configs/std.npy")
     img = input_image_exp[0, :, :, :]
     img_resized = cv2.resize(img, dsize=(256, 256), interpolation=cv2.INTER_CUBIC)
     img_height, img_width, img_channel = img_resized.shape

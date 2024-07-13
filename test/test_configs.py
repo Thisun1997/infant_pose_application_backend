@@ -1,12 +1,13 @@
 import os
 
-from pymongo import MongoClient, ReturnDocument
+import mongomock
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-class Config:
-    client = MongoClient('localhost', 27017)
+class TestConfig:
+    client = mongomock.MongoClient()
     db = client['infant_pose_visualizer_system']  # Replace with your MongoDB database name
     users_collection = db['users']
     patients_collection = db['patients']

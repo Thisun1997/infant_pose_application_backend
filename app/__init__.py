@@ -11,9 +11,9 @@ bcrypt = Bcrypt(app)
 # Initialize Flask extensions here
 
 # Register blueprints here
-from app.main import bp as main_bp
-
-app.register_blueprint(main_bp)
+# from app.main import bp as main_bp
+#
+# app.register_blueprint(main_bp)
 
 from app.model_loader import bp as model_loader_bp
 

@@ -1,0 +1,13 @@
+[run]
+source = .
+omit =
+    test/*
+    */__init__.py
+    model/*
+    app/utils/*
+
+[report]
+ignore_errors = True
+omit =
+    test/*
+    */__init__.py
