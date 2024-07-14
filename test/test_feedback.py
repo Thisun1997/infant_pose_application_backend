@@ -31,7 +31,7 @@ class FeedbackTest(BaseTestCase):
         mock_find.side_effect = Exception("Mocked Exception")
         response = self.app.get("feedback/")
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['error'])
+        self.assertIn("Internal error occurred", response.json['error'])
 
     def test_add_feedback(self):
         data = {"feedback": "general_feedback_2", "user": "test1", "time": "1720272757552588700"}
@@ -45,7 +45,7 @@ class FeedbackTest(BaseTestCase):
         data = {"feedback": "general_feedback_2", "user": "test1", "time": "1720272757552588700"}
         response = self.app.post("feedback/add", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
     def test_get_feedback_available(self):
         data = {"vis_insertion_id": "66894d3e72549bcf10113082"}
@@ -65,7 +65,7 @@ class FeedbackTest(BaseTestCase):
         data = {"vis_insertion_id": "test"}
         response = self.app.get("feedback/get", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
 
 if __name__ == '__main__':

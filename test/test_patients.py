@@ -37,7 +37,7 @@ class PatientsTest(BaseTestCase):
         mock_find.side_effect = Exception("Mocked Exception")
         response = self.app.get("patients/")
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['error'])
+        self.assertIn("Internal error occurred", response.json['error'])
 
     def test_register_patient(self):
         data = {"patient_name": "patient3", "gender": "Male", "date_of_birth": "2024-04-16", "guardian": "guardian3"}
@@ -51,7 +51,7 @@ class PatientsTest(BaseTestCase):
         data = {"patient_name": "patient3", "gender": "Male", "date_of_birth": "2024-04-16", "guardian": "guardian3"}
         response = self.app.post("patients/registration", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
     def test_get_patient_success(self):
         data = {"_id":1}
@@ -65,7 +65,7 @@ class PatientsTest(BaseTestCase):
         data = {"_id":1}
         response = self.app.get("patients/data", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
     def test_update_patient_document_success(self):
         new_contact_number = "0999999999"
@@ -94,5 +94,5 @@ class PatientsTest(BaseTestCase):
         data = {"query": {"_id":2}, "new_field": {"contact_number": new_contact_number}}
         response = self.app.put("patients/update_data", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 

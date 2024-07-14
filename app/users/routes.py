@@ -26,4 +26,4 @@ def authenticate_user():
             return jsonify({"message": "Incorrect Username, Password and User type combination"}), 401
     except Exception as e:
         logger.error(f"Error in users/auth {str(e)}")
-        return jsonify({'message': str(e)}), 500
+        return jsonify({'message': "Internal error occurred"}), 500

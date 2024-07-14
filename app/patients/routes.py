@@ -22,7 +22,7 @@ def index():
         return jsonify(result), 200
     except Exception as e:
         logger.error(f"Error in patients/ {str(e)}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': "Internal error occurred"}), 500
 
 
 @bp.route('/registration', methods=['POST'])
@@ -37,7 +37,7 @@ def register_patient():
         return jsonify({"message": "Registration successful!. Patient registration number is " + str(data["_id"])}), 200
     except Exception as e:
         logger.error(f"Error in patients/registration {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500
 
 
 @bp.route('/data', methods=['GET'])
@@ -49,7 +49,7 @@ def get_patient():
         return dumps(data), 200
     except Exception as e:
         logger.error(f"Error in patients/data {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500
 
 
 @bp.route('/update_data', methods=['PUT'])
@@ -78,4 +78,4 @@ def update_patient_document():
 
     except Exception as e:
         logger.error(f"Error in patients/update_data {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500

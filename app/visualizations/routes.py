@@ -33,7 +33,7 @@ def display_prediction():
         return jsonify({"message": str(result.inserted_id)}), 200
     except Exception as e:
         logger.error(f"Error in visualizations/prediction {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500
 
 
 @bp.route('/update', methods=['PUT'])
@@ -62,7 +62,7 @@ def update_document():
 
     except Exception as e:
         logger.error(f"Error in visualizations/update {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500
 
 
 @bp.route('/visualization_data', methods=['GET'])
@@ -75,7 +75,7 @@ def get_visualization_data():
         return dumps(data), 200
     except Exception as e:
         logger.error(f"Error in visualizations/visualization_data {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500
 
 
 @bp.route('/history_data', methods=['GET'])
@@ -100,4 +100,4 @@ def get_history_data():
         return dumps(data_list), 200
     except Exception as e:
         logger.error(f"Error in visualizations/history_data {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500

@@ -47,7 +47,7 @@ class VisualizationsTest(BaseTestCase):
         }
         response = self.app.post("visualizations/prediction", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
     def test_update_document_success(self):
         data = {
@@ -99,7 +99,7 @@ class VisualizationsTest(BaseTestCase):
         }
         response = self.app.put("visualizations/update", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
     def test_get_visualization_data(self):
         data = {"_id": str(self.insert_id)}
@@ -114,7 +114,7 @@ class VisualizationsTest(BaseTestCase):
         data = {"_id": str(self.insert_id)}
         response = self.app.get("visualizations/visualization_data", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
     def test_get_history_data_success(self):
         data = {
@@ -158,6 +158,6 @@ class VisualizationsTest(BaseTestCase):
         }
         response = self.app.get("visualizations/history_data", json=data)
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
 

@@ -26,7 +26,7 @@ class UsersTests(BaseTestCase):
         mock_find_one.side_effect = Exception("Mocked Exception")
         response = self.app.post('/users/auth', json={"username": "testuser", "password": "test", "user_type": 2})
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
 
 if __name__ == '__main__':

@@ -33,7 +33,7 @@ def index():
         return jsonify(result[::-1]), 200
     except Exception as e:
         logger.error(f"Error in model_loader/ {str(e)}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': "Internal error occurred"}), 500
 
 
 @bp.route('/update_model', methods=['PUT'])
@@ -68,7 +68,7 @@ def update_model():
 
     except Exception as e:
         logger.error(f"Error in model_loader/update_model {str(e)}")
-        return jsonify({'message': str(e)}), 500
+        return jsonify({'message': "Internal error occurred"}), 500
 
 
 @bp.route('/get_model', methods=['GET'])
@@ -81,4 +81,4 @@ def get_active_model():
         return dumps(active_model_configs), 200
     except Exception as e:
         logger.error(f"Error in model_loader/get_model {str(e)}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': "Internal error occurred"}), 500

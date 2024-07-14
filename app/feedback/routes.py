@@ -21,7 +21,7 @@ def index():
         return jsonify(result[::-1]), 200
     except Exception as e:
         logger.error(f"Error in feedback/ {str(e)}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': "Internal error occurred"}), 500
 
 
 @bp.route('/add', methods=['POST'])
@@ -33,7 +33,7 @@ def add_feedback():
         return jsonify({"message": "feedback submitted successfully"}), 200
     except Exception as e:
         logger.error(f"Error in feedback/add/ {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500
 
 
 @bp.route('/get', methods=['GET'])
@@ -48,4 +48,4 @@ def get_feedback():
             return jsonify({"message": "-"}), 404
     except Exception as e:
         logger.error(f"Error in feedback/get/ {str(e)}")
-        return jsonify({"message": str(e)}), 500
+        return jsonify({"message": "Internal error occurred"}), 500

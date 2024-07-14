@@ -34,7 +34,7 @@ class ModelLoaderTests(BaseTestCase):
         mock_find.side_effect = Exception("Mocked Exception")
         response = self.app.get('model_loader/')
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['error'])
+        self.assertIn("Internal error occurred", response.json['error'])
 
     def test_update_model_success(self):
         records = Config.model_collection.find()
@@ -88,7 +88,7 @@ class ModelLoaderTests(BaseTestCase):
                 data["activate_id"] = str(record["_id"])
         response = self.app.put('model_loader/update_model', json={"query": data})
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['message'])
+        self.assertIn("Internal error occurred", response.json['message'])
 
     def test_get_active_model(self):
         records = Config.model_collection.find()
@@ -113,7 +113,7 @@ class ModelLoaderTests(BaseTestCase):
                 break
         response = self.app.get('model_loader/get_model', json={"_id": str(active_model_configs["_id"])})
         self.assertEqual(response.status_code, 500)
-        self.assertIn('Mocked Exception', response.json['error'])
+        self.assertIn("Internal error occurred", response.json['error'])
 
 
 if __name__ == '__main__':
