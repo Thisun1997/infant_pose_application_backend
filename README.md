@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/thisun1997/infant_pose_application_backend/badge)](https://www.codefactor.io/repository/github/thisun1997/infant_pose_application_backend)
+
 <h1>Introduction</h1>
 
 This codebase contains the backend API implementations of the <i>Infant Pose Visualizer</i> application. Flask micro framework with Blueprints are used for the development. The following endpoints are available for consumption:
