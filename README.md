@@ -1,4 +1,4 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/thisun1997/infant_pose_application_backend/badge)](https://www.codefactor.io/repository/github/thisun1997/infant_pose_application_backend)
+[![CodeFactor](https://www.codefactor.io/repository/github/thisun1997/infant_pose_application_backend/badge)](https://www.codefactor.io/repository/github/thisun1997/infant_pose_application_backend)      [![CodeQL](https://github.com/Thisun1997/infant_pose_application_backend/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Thisun1997/infant_pose_application_backend/actions/workflows/github-code-scanning/codeql)
 
 <h1>Introduction</h1>
 
