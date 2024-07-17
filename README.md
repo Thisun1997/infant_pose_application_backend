@@ -21,6 +21,7 @@ when running in localhost base url is: `http://127.0.0.1:5000/`
 | GET        | feedback/             | Fetch all feedback data                                                      |
 | POST       | feedback/add             | Add a specific or general feedback                                           |
 | GET        | feedback/get             | Get the feedback relevant to a given visualization record                    |
+
 The GUIs related to the application are available [here](https://github.com/Thisun1997/infant_pose_estimation_frontend).
 
 <h1>How to get started?</h1>
